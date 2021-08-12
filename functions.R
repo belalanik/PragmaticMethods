@@ -77,8 +77,8 @@ function.point <- function(data = data, Z = Z, A = A, vars = vars, method = "ITT
   if(method == "2SLS"){
     s1 <- glm(formula(paste("A ~ Z + ", paste(vars, collapse=" + "))), 
               data = data, family = binomial)
-    data$pr.A <- predict(s1, type = "response")
-    fit <- glm(formula(paste("Y ~ pr.A + ", paste(vars, collapse=" + "))), 
+    data$A.new <- predict(s1, type = "response")
+    fit <- glm(formula(paste("Y ~ A.new + ", paste(vars, collapse=" + "))), 
                data = data, family = binomial("logit"))
   }
   
