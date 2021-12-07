@@ -47,7 +47,7 @@ datagen.point <- function(i, Z, alpha0, alpha1, alpha2, alpha3, alpha4,
 
 iters <- 1
 
-n <- 25000 # Number of subjects in each arm
+n <- 1000 # Number of subjects in each arm
 
 set.seed(1000)
 for (iter in 1:iters){
@@ -287,7 +287,7 @@ iters <- 1
 # Define number of time points
 K <- 60
 
-n <- 1000 # Number of subjects in each arm (used 25,000 for the main analysis)
+n <- 1000 # Number of subjects in each arm
 
 # Interval of data measurement 
 m <- 1
@@ -355,12 +355,8 @@ for (iter in 1:iters){
 simdat <- simdat[with(simdat, order(id, Z, time)),]
 
 ## Baseline covariates added
-simdat <- simdat %>% 
-  group_by(id) %>%
-  mutate(
-    B1 = L1[time==0],
-    B2 = L2[time==0]
-  )
+setDT(simdat)[,B1:=L1[time==0], by = id] # B1 = baseline version of L1
+setDT(simdat)[,B2:=L2[time==0], by = id] # B2 = baseline version of L2
 
 # Save the data in a .csv file
 write.csv(simdat, file = "DataS1.csv", row.names = F)
